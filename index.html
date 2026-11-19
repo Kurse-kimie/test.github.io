@@ -532,7 +532,7 @@
         let resultsSent = false;
         let profileLoaded = false;
         let candidateProfile = null;
-        const testResultsEndpoint = "/send-test-results.php";
+        const testResultsEndpoint = "https://formsubmit.co/ajax/kurse.kimie100@gmail.com";
 
         async function loadCandidateProfile() {
             submitButton.disabled = true;
@@ -724,22 +724,21 @@
                     Accept: "application/json",
                     "Content-Type": "application/json"
                 },
-                credentials: "same-origin",
                 body: JSON.stringify({
-                    firstName,
-                    lastName,
-                    emailConsent: form.elements.namedItem("emailConsent").checked,
-                    correctCount: outcome.correctCount,
-                    total: questions.length,
-                    percentage: outcome.percentage,
+                    _subject: "Rezultati i testit të kimisë 10",
+                    _captcha: "false",
+                    _template: "table",
+                    candidate: `${firstName} ${lastName}`,
+                    score: `${outcome.correctCount} / ${questions.length}`,
+                    percentage: `${outcome.percentage}%`,
                     grade: outcome.grade,
-                    answerDetails,
-                    honeypot: form.elements.namedItem("_honey").value
+                    unanswered: questions.length - form.querySelectorAll('input[type="radio"]:checked').length,
+                    answers: answerDetails
                 })
             });
-            const responseData = await response.json().catch(() => ({}));
-            if (!response.ok || responseData.success !== true || responseData.teacherNotified !== true) {
-                throw new Error(responseData.error || `Dërgimi i emailit dështoi me statusin ${response.status}.`);
+            const responseData = await response.json();
+            if (!response.ok || (responseData.success !== true && responseData.success !== "true")) {
+                throw new Error(responseData.message || `FormSubmit nuk konfirmoi dërgimin (statusi ${response.status}).`);
             }
         }
 
