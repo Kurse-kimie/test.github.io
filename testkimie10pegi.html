@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Test vetëvlerësues për Kimi 10: atomi, konfigurimi elektronik, numrat kuantikë dhe vetitë periodike.">
+    <title>Test Kimie 10 | Portali mësimor</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #172b43;
+            --muted: #5b6b7d;
+            --navy: #10243b;
+            --blue: #1e40af;
+            --cyan: #14a89a;
+            --paper: #f3f6fa;
+            --line: #d8e1eb;
+            --green: #15803d;
+            --red: #b91c1c;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: var(--ink);
+            background: var(--paper);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            line-height: 1.55;
+        }
+
+        a { color: inherit; }
+
+        .hero {
+            padding: 36px 20px 32px;
+            color: #f8fafc;
+            text-align: center;
+            background:
+                radial-gradient(circle at 50% 0, rgba(20, 168, 154, .2), transparent 55%),
+                linear-gradient(135deg, #0b1728, #123c55);
+            border-bottom: 4px solid var(--cyan);
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font: 700 clamp(1.8rem, 4vw, 2.6rem)/1.2 Georgia, "Times New Roman", serif;
+        }
+
+        .hero p { margin: 0; color: #cbd5e1; }
+
+        .top-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px 24px;
+            padding: 12px 16px;
+            background: #fff;
+            border-bottom: 1px solid var(--line);
+            font-size: .92rem;
+            font-weight: 600;
+        }
+
+        .top-links a { color: var(--blue); text-decoration: none; }
+        .top-links a:hover { text-decoration: underline; }
+
+        main { width: min(940px, calc(100% - 32px)); margin: 28px auto 52px; }
+
+        .intro, .question, .results {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, .05);
+        }
+
+        .intro { padding: 20px 24px; margin-bottom: 18px; }
+        .intro h2 { margin: 0 0 6px; font-size: 1.18rem; }
+        .intro p { margin: 5px 0; color: #475569; }
+        .intro .note { font-size: .9rem; color: var(--muted); }
+
+        .candidate-fields {
+            padding: 20px 24px;
+            margin-bottom: 18px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, .05);
+        }
+        .candidate-fields h2 { margin: 0 0 14px; font-size: 1.18rem; }
+        .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .field-grid label { display: grid; gap: 6px; font-size: .92rem; font-weight: 700; }
+        .field-grid input {
+            width: 100%;
+            min-height: 44px;
+            padding: 9px 11px;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font: inherit;
+        }
+        .consent-label { display: flex; align-items: flex-start; gap: 9px; margin-top: 16px; font-size: .9rem; }
+        .consent-label input { flex: 0 0 auto; margin: 5px 0 0; accent-color: var(--blue); }
+        .privacy-note { margin: 8px 0 0; color: var(--muted); font-size: .82rem; }
+
+        .progress-wrap {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            background: rgba(255, 255, 255, .96);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 14px rgba(16, 36, 59, .06);
+        }
+
+        .progress-label { min-width: max-content; color: #334b63; font-size: .9rem; font-weight: 700; }
+        .progress-track { height: 9px; flex: 1; overflow: hidden; background: #e5ebf1; border-radius: 999px; }
+        .progress-bar { width: 0; height: 100%; background: var(--cyan); border-radius: inherit; transition: width .2s ease; }
+
+        .section-title {
+            margin: 28px 0 12px;
+            padding-left: 12px;
+            color: #153b5c;
+            border-left: 4px solid var(--cyan);
+            font-size: 1.12rem;
+        }
+
+        .question { min-width: 0; padding: 19px 21px; margin-bottom: 12px; border-color: var(--line); }
+        .question legend { width: 100%; padding: 0; color: #1d334c; font-weight: 700; }
+        .q-number { margin-right: 5px; color: var(--blue); }
+        .options { display: grid; gap: 8px; margin-top: 13px; }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 12px;
+            background: #f7f9fc;
+            border: 1px solid #dfe6ee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color .15s, background .15s;
+        }
+
+        .option:hover { background: #eff8f8; border-color: #74c9c1; }
+        .option input { flex: 0 0 auto; margin: 4px 0 0; accent-color: var(--blue); }
+        .option:has(input:checked) { background: #edf7f6; border-color: var(--cyan); }
+
+        .actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+        button {
+            min-height: 46px;
+            padding: 11px 22px;
+            color: #fff;
+            background: #174b68;
+            border: 0;
+            border-radius: 8px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        button:hover { background: #123b55; }
+        button:disabled { opacity: .65; cursor: wait; }
+        button.secondary { color: #334155; background: #e2e8f0; }
+        button.secondary:hover { background: #cbd5e1; }
+        button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #2dd4bf; outline-offset: 3px; }
+
+        .results { display: none; padding: 22px; margin: 20px 0; scroll-margin-top: 80px; }
+        .results.visible { display: block; }
+        .results h2 { margin: 0; color: #153b5c; }
+        .candidate-result { margin: 8px 0; font-weight: 700; }
+        .score { margin: 8px 0; font-size: 1.35rem; font-weight: 800; }
+        .result-summary { margin: 0 0 16px; color: #475569; }
+        .award {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            margin: 12px 0;
+            color: #854d0e;
+            background: #fef9c3;
+            border: 1px solid #facc15;
+            border-radius: 9px;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+        .award[hidden] { display: none; }
+        .award-icon { font-size: 1.8rem; }
+        .submission-status { min-height: 1.5em; margin: 10px 0 16px; font-weight: 700; }
+        .submission-status.success { color: var(--green); }
+        .submission-status.error { color: var(--red); }
+        .review-list { display: grid; gap: 10px; }
+        .review-item { padding: 12px 14px; border-left: 4px solid var(--line); background: #f8fafc; border-radius: 6px; }
+        .review-item.correct { border-left-color: #22c55e; }
+        .review-item.incorrect { border-left-color: #ef4444; }
+        .review-item p { margin: 4px 0; }
+        .review-item .explanation { color: #475569; font-size: .94rem; }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        footer { padding: 20px; color: #64748b; text-align: center; font-size: .85rem; }
+
+        @media (max-width: 600px) {
+            .hero { padding: 26px 16px 24px; }
+            main { width: min(100% - 24px, 940px); margin-top: 16px; }
+            .intro, .question, .results { padding: 16px; }
+            .candidate-fields { padding: 16px; }
+            .field-grid { grid-template-columns: 1fr; }
+            .top-links { gap: 8px 16px; padding: 11px 12px; font-size: .88rem; }
+            .progress-wrap { top: 0; gap: 9px; padding: 10px; }
+            .progress-label { font-size: .82rem; }
+            .option { min-height: 48px; padding: 11px 12px; }
+            .actions button { flex: 1 1 100%; max-width: 420px; }
+            .results .score { font-size: 1.2rem; }
+        }
+
+        @media (max-width: 360px) {
+            .hero h1 { font-size: 1.65rem; }
+            .progress-wrap { gap: 7px; padding: 9px; }
+            .progress-label { font-size: .78rem; }
+            .question, .candidate-fields, .intro, .results { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <h1>Test i parë i kursit të Kimisë 10</h1>
+        <p>Atomi · konfigurimi elektronik · sistemi periodik</p>
+    </header>
+
+    <nav class="top-links" aria-label="Lidhje ndihmëse">
+        <a href="kimi10.html">← Kthehu te Kimia 10</a>
+    </nav>
+
+    <main>
+        <section class="intro" aria-labelledby="test-info">
+            <h2 id="test-info">Udhëzime</h2>
+            <p>Testi ka 33 pyetje me alternativa. Zgjidh një përgjigje për çdo pyetje dhe në fund shtyp <strong>Përfundo dhe dërgo testin</strong>. Pas shënimit të pëlqimit, rezultati shfaqet edhe për ty dhe i dërgohet mësuesit.</p>
+            <p class="note">Pyetjet përfshijnë gjendjet e lëndës, ndarjen e substancave, atomin dhe konfigurimin elektronik, sistemin periodik, katër numrat kuantikë dhe vetitë periodike.</p>
+            <p class="note">Pyetjet dhe alternativat radhiten ndryshe sa herë hapet testi.</p>
+            <p class="note">Grupet shënohen me emërtimin klasik A/B: grupet kryesore IA–VIIIA dhe grupet kalimtare IIIB–VIIIB, IB dhe IIB.</p>
+            <p class="note"><strong>Shkalla e vlerësimit:</strong> 91–100% = 10; 81–90% = 9; 71–80% = 8; 61–70% = 7; 51–60% = 6; 41–50% = 5; 0–40% = 4. Përqindja rrumbullakohet në numër të plotë.</p>
+        </section>
+
+        <div class="progress-wrap" aria-label="Përparimi i testit">
+            <span class="progress-label" id="progress-label">0 nga 33 përgjigje</span>
+            <div class="progress-track" role="progressbar" aria-label="Pyetje të plotësuara" aria-valuemin="0" aria-valuemax="33" aria-valuenow="0" id="progress-track">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <form id="quiz-form">
+            <section class="candidate-fields" aria-labelledby="candidate-title">
+                <h2 id="candidate-title">Të dhënat e kandidatit</h2>
+                <div class="field-grid">
+                    <label for="candidate-first-name">Emri
+                        <input id="candidate-first-name" name="firstName" type="text" autocomplete="given-name" maxlength="60" required>
+                    </label>
+                    <label for="candidate-last-name">Mbiemri
+                        <input id="candidate-last-name" name="lastName" type="text" autocomplete="family-name" maxlength="60" required>
+                    </label>
+                </div>
+                <label class="consent-label" for="email-consent">
+                    <input id="email-consent" name="emailConsent" type="checkbox" required aria-required="true">
+                    <span><strong>Pëlqim i detyrueshëm:</strong> Pranoj që emri, mbiemri dhe rezultatet/përgjigjet e këtij testi t’i dërgohen mësuesit në emailin <strong>kurse.kimie100@gmail.com</strong>. Pa shënuar këtë kuti, testi nuk dorëzohet.</span>
+                </label>
+                <p class="privacy-note">Pëlqimi është i detyrueshëm. Pas dorëzimit të testit, rezultati do të shfaqet edhe këtu.</p>
+                <div class="visually-hidden" aria-hidden="true">
+                    <label for="website">Lëre këtë fushë bosh</label>
+                    <input id="website" name="_honey" type="text" tabindex="-1" autocomplete="off">
+                </div>
+            </section>
+            <div id="questions"></div>
+            <div class="actions">
+                <button type="submit">Përfundo dhe dërgo testin</button>
+                <button type="reset" class="secondary">Fillo përsëri</button>
+            </div>
+        </form>
+
+        <section class="results" id="results" aria-labelledby="results-title" aria-live="polite">
+            <h2 id="results-title">Rezultati yt</h2>
+            <p class="candidate-result" id="candidate-result"></p>
+            <p class="score" id="score"></p>
+            <p class="result-summary" id="result-summary"></p>
+            <div class="award" id="award" hidden role="status">
+                <span class="award-icon" aria-hidden="true">🏆</span>
+                <span>Shkëlqyeshëm! Ke arritur të paktën 95%.</span>
+            </div>
+            <p class="submission-status" id="submission-status" role="status" aria-live="polite"></p>
+            <div class="review-list" id="review-list"></div>
+        </section>
+    </main>
+
+    <footer>Portali i kursit të kimisë · Klasa 10</footer>
+
+    <script>
+        const questions = [
+            {
+                section: "I. Gjendjet e lëndës",
+                text: "Si janë vendosur grimcat në një trup të ngurtë?",
+                options: ["Larg njëra-tjetrës dhe lëvizin lirshëm", "Afër njëra-tjetrës dhe lëkunden rreth pozicioneve të caktuara", "Pa asnjë lëvizje", "Janë të shpërndara në mënyrë të çrregullt në të gjithë enën"],
+                answer: 1,
+                explanation: "Në trupat e ngurtë grimcat janë shumë pranë dhe lëkunden rreth pozicioneve të tyre; prandaj trupi ruan formën dhe vëllimin."
+            },
+            {
+                text: "Cili pohim për gazrat është i saktë?",
+                options: ["Kanë formë dhe vëllim të pandryshueshëm", "Kanë vëllim të pandryshueshëm, por jo formë", "Marrin formën dhe vëllimin e enës dhe mund të ngjeshen", "Grimcat e tyre nuk lëvizin"],
+                answer: 2,
+                explanation: "Grimcat e gazit janë larg njëra-tjetrës dhe lëvizin lirshëm; gazi mbush enën dhe mund të ngjeshet."
+            },
+            {
+                text: "Në cilën gjendje shpërhapja (difuzioni) ndodh zakonisht më shpejt?",
+                options: ["Në trupat e ngurtë", "Në lëngje", "Në gaze", "Me të njëjtën shpejtësi në të tria gjendjet"],
+                answer: 2,
+                explanation: "Në gaze grimcat lëvizin shpejt dhe janë larg njëra-tjetrës, ndaj shpërhapen më shpejt se në lëngje ose të ngurta."
+            },
+            {
+                text: "Avullimi i ujit është:",
+                options: ["Shndërrim fizik nga lëngu në gaz", "Reaksion kimik që krijon një substancë të re", "Shndërrim nga i ngurtë në lëng", "Ndarje e ujit në hidrogjen dhe oksigjen"],
+                answer: 0,
+                explanation: "Gjatë avullimit uji kalon nga gjendja e lëngët në atë të gaztë, por mbetet e njëjta substancë: H₂O."
+            },
+            {
+                section: "II. Ndarja e substancave",
+                text: "Cila metodë përdoret për të ndarë një lëndë të ngurtë të patretshme nga një lëng?",
+                options: ["Filtrimi", "Distilimi", "Kromatografia", "Shkrirja"],
+                answer: 0,
+                explanation: "Filtrimi mban grimcat e patretshme në filtër, ndërsa lëngu kalon përmes tij."
+            },
+            {
+                text: "Cila metodë është më e përshtatshme për të ndarë dy lëngje të përziera që kanë pika vlimi të ndryshme?",
+                options: ["Filtrimi", "Distilimi", "Magnetizimi", "Dekantimi i një trupi të ngurtë"],
+                answer: 1,
+                explanation: "Distilimi shfrytëzon ndryshimin e pikave të vlimit: përbërësi me pikë vlimi më të ulët avullon i pari dhe më pas kondensohet."
+            },
+            {
+                text: "Për çfarë përdoret kromatografia në letër?",
+                options: ["Për të ndarë përbërësit e një përzierjeje, si ngjyrat e bojës", "Për të ndarë rërën nga uji me filtër", "Për të shkrirë një metal", "Për të matur masën e një tretësire"],
+                answer: 0,
+                explanation: "Në kromatografi përbërësit lëvizin në mënyra të ndryshme përgjatë fazës së palëvizshme, prandaj ndahen."
+            },
+            {
+                text: "Si mund të ndahen rëra dhe kripa e përzier me njëra-tjetrën?",
+                options: ["Me magnet dhe pastaj me sitë", "Tretet kripa në ujë, filtrohet rëra dhe avullohet uji", "Me kromatografi dhe pastaj me dekantim", "Nuk mund të ndahen me metoda fizike"],
+                answer: 1,
+                explanation: "Kripa tretet në ujë, ndërsa rëra jo. Filtrimi largon rërën; avullimi ose kristalizimi rikthen kripën nga tretësira."
+            },
+            {
+                section: "III. Atomi dhe konfigurimi elektronik",
+                text: "Numri atomik (Z) i një elementi tregon numrin e:",
+                options: ["Neutroneve në bërthamë", "Protoneve në bërthamë", "Niveleve energjetike", "Elektroneve të valencës"],
+                answer: 1,
+                explanation: "Numri atomik është numri i protoneve në bërthamë. Në një atom neutral, ai është edhe i barabartë me numrin e elektroneve."
+            },
+            {
+                text: "Sa elektrone ka atomi neutral i klorit, nëse Z = 17?",
+                options: ["7", "17", "18", "35"],
+                answer: 1,
+                explanation: "Në një atom neutral numri i elektroneve është i barabartë me numrin atomik: 17."
+            },
+            {
+                text: "Cila është formula elektronike e plotë e klorit (Z = 17)?",
+                options: ["1s² 2s² 2p⁶ 3s² 3p⁵", "1s² 2s² 2p⁶ 3s² 3p⁶", "1s² 2s² 2p⁵ 3s² 3p⁶", "1s² 2s² 2p⁶ 3s¹ 3p⁶"],
+                answer: 0,
+                explanation: "Duke plotësuar orbitalet sipas rendit të energjisë, 17 elektronet e klorit shpërndahen si 1s² 2s² 2p⁶ 3s² 3p⁵."
+            },
+            {
+                text: "Sa është numri maksimal i elektroneve në shtresën me n = 3?",
+                options: ["8", "10", "18", "32"],
+                answer: 2,
+                explanation: "Numri maksimal i elektroneve në një shtresë jepet nga 2n². Për n = 3: 2 × 3² = 18."
+            },
+            {
+                text: "Një element ka konfigurimin 1s² 2s² 2p⁶ 3s² 3p⁴. Në cilën periodë dhe grup ndodhet?",
+                options: ["Perioda 2, grupi VIA", "Perioda 3, grupi VIA", "Perioda 3, grupi IVB", "Perioda 4, grupi VIB"],
+                answer: 1,
+                explanation: "Vlera më e madhe e n është 3, prandaj elementi është në periodën 3. Ka 6 elektrone valencë (3s² 3p⁴), pra ndodhet në grupin VIA."
+            },
+            {
+                text: "Sipas rregullit të Hundit, si vendosen fillimisht elektronet në orbitalet me energji të njëjtë?",
+                options: ["Çiftëzohen menjëherë në orbitalin e parë", "Vendosen veçmas, me spine paralele, para çiftëzimit", "Vendosen vetëm në orbitalin s", "Vendosen me spine të kundërta në çdo orbital"],
+                answer: 1,
+                explanation: "Orbitalet me energji të njëjtë zënë fillimisht nga një elektron me spine paralele; çiftëzimi fillon pasi ato të kenë nga një elektron."
+            },
+            {
+                section: "IV. Katër numrat kuantikë",
+                text: "Çfarë përshkruan numri kuantik kryesor n?",
+                options: ["Orientimin e orbitalit", "Drejtimin e spin-it", "Shtresën kryesore energjetike", "Ngarkesën e bërthamës"],
+                answer: 2,
+                explanation: "Numri kuantik kryesor n përcakton shtresën energjetike dhe lidhet me madhësinë/energjinë e orbitalit."
+            },
+            {
+                text: "Cila vlerë e numrit kuantik orbital l i përket nënnivelit d?",
+                options: ["l = 0", "l = 1", "l = 2", "l = 3"],
+                answer: 2,
+                explanation: "Nënnivelet s, p, d, f përputhen përkatësisht me l = 0, 1, 2, 3."
+            },
+            {
+                text: "Kur n = 3, cilat vlera mund të marrë l?",
+                options: ["Vetëm 3", "0, 1, 2", "1, 2, 3", "0, 1, 2, 3"],
+                answer: 1,
+                explanation: "Për një vlerë të dhënë të n, l merr vlera të plota nga 0 deri në n − 1. Për n = 3: 0, 1, 2."
+            },
+            {
+                text: "Nëse l = 1, cilat janë vlerat e mundshme të numrit kuantik magnetik mₗ?",
+                options: ["Vetëm 0", "−1, 0, +1", "−2, −1, 0, +1, +2", "Vetëm −1 dhe +1"],
+                answer: 1,
+                explanation: "Numri kuantik magnetik mₗ merr vlera të plota nga −l deri në +l. Për l = 1, vlerat janë −1, 0 dhe +1."
+            },
+            {
+                text: "Cilat janë vlerat e mundshme të numrit kuantik të spin-it mₛ?",
+                options: ["0 dhe 1", "−1, 0 dhe +1", "−½ dhe +½", "Çdo numër i plotë"],
+                answer: 2,
+                explanation: "Numri kuantik i spin-it ka dy vlera të mundshme: +½ dhe −½."
+            },
+            {
+                text: "Cili pohim për dy elektrone në të njëjtin orbital është i saktë?",
+                options: ["Kanë të katër numrat kuantikë të njëjtë", "Kanë spine të kundërta", "Kanë gjithmonë energji të ndryshme", "Nuk mund të ndodhen në të njëjtin orbital"],
+                answer: 1,
+                explanation: "Sipas parimit të Paulit, dy elektrone në të njëjtin orbital kanë numra kuantikë të njëjtë përveç mₛ, i cili duhet të jetë i kundërt."
+            },
+            {
+                section: "V. Sistemi periodik",
+                text: "Si përcaktohet perioda e një elementi nga konfigurimi elektronik?",
+                options: ["Nga numri i protoneve", "Nga numri i shtresave të zëna, ose n më i madh", "Nga numri i elektroneve të çiftëzuara", "Nga numri i neutroneve"],
+                answer: 1,
+                explanation: "Perioda tregon numrin e shtresave elektronike të zëna; njësoj, ajo përputhet me vlerën më të madhe të n në konfigurim."
+            },
+            {
+                text: "Sipas cilit kriter janë renditur elementet në sistemin periodik modern?",
+                options: ["Sipas rritjes së numrit atomik", "Sipas rritjes së masës së mostrës", "Sipas numrit të neutroneve", "Sipas alfabetit të emrave"],
+                answer: 0,
+                explanation: "Në sistemin periodik modern elementet renditen sipas rritjes së numrit atomik, pra të numrit të protoneve."
+            },
+            {
+                text: "Cili përshkrim i rreshtave dhe kolonave të sistemit periodik është i saktë?",
+                options: ["Rreshtat janë grupe, kolonat janë perioda", "Rreshtat janë perioda, kolonat janë grupe", "Rreshtat dhe kolonat quhen të gjitha perioda", "Rreshtat dhe kolonat quhen të gjitha grupe"],
+                answer: 1,
+                explanation: "Rreshtat horizontalë quhen perioda, ndërsa kolonat vertikale quhen grupe."
+            },
+            {
+                text: "Pse elementet e të njëjtit grup kryesor kanë zakonisht veti kimike të ngjashme?",
+                options: ["Kanë të njëjtën masë atomike", "Kanë numër të njëjtë neutronesh", "Kanë numër të njëjtë elektronesh në shtresën e jashtme", "Kanë të gjithë të njëjtin numër atomik"],
+                answer: 2,
+                explanation: "Elementet e të njëjtit grup kryesor kanë numër të ngjashëm/të njëjtë elektronesh valencë, të cilët ndikojnë fort në vetitë kimike."
+            },
+            {
+                text: "Ku gjenden shumica e metaleve në sistemin periodik?",
+                options: ["Në anën e majtë dhe në qendër", "Vetëm në këndin e sipërm djathtas", "Vetëm në grupin VIIIA", "Jashtë sistemit periodik"],
+                answer: 0,
+                explanation: "Shumica e metaleve gjenden në anën e majtë dhe në qendër të sistemit periodik; shumica e jometaleve janë në anën e djathtë."
+            },
+            {
+                section: "VI. Vetitë periodike",
+                text: "Si ndryshon zakonisht rrezja atomike përgjatë një periode, nga e majta në të djathtë?",
+                options: ["Rritet", "Zvogëlohet", "Mbetet gjithmonë e njëjtë", "Fillimisht bëhet zero"],
+                answer: 1,
+                explanation: "Përgjatë periodës rritet ngarkesa bërthamore efektive, ndaj elektronet tërhiqen më fort dhe rrezja atomike zakonisht zvogëlohet."
+            },
+            {
+                text: "Si ndryshon zakonisht rrezja atomike duke zbritur poshtë në një grup?",
+                options: ["Zvogëlohet", "Rritet", "Nuk ndryshon", "Bëhet e barabartë me numrin atomik"],
+                answer: 1,
+                explanation: "Duke zbritur në grup shtohen shtresa elektronike, prandaj rrezja atomike rritet."
+            },
+            {
+                text: "Cili është ndryshimi i zakonshëm i potencialit të parë të jonizimit përgjatë një periode, nga e majta në të djathtë?",
+                options: ["Zakonisht rritet", "Zakonisht zvogëlohet", "Mbetet i pandryshuar", "Bëhet gjithmonë zero"],
+                answer: 0,
+                explanation: "Në përgjithësi, tërheqja më e fortë e bërthamës përgjatë periodës e bën më të vështirë largimin e elektronit, ndaj potenciali i jonizimit rritet."
+            },
+            {
+                text: "Cili element ka elektronegativitetin më të lartë?",
+                options: ["Natriumi (Na)", "Karboni (C)", "Fluori (F)", "Kaliumi (K)"],
+                answer: 2,
+                explanation: "Fluori është elementi më elektronegativ; ai tërheq me forcë të madhe çiftin e përbashkët të elektroneve në një lidhje."
+            },
+            {
+                text: "Cili pohim për afrinë për elektronin të elementeve halogjene është më i përshtatshëm?",
+                options: ["Halogjenet priren të marrin një elektron; procesi zakonisht çliron energji", "Halogjenet nuk mund të marrin elektrone", "Marrja e elektronit i kthen gjithmonë në katione", "Afëria për elektronin është e njëjtë me numrin e neutroneve"],
+                answer: 0,
+                explanation: "Halogjenet kanë shtatë elektrone valencë dhe priren të marrin një elektron për të plotësuar shtresën e jashtme; kjo shoqërohet zakonisht me çlirim energjie."
+            },
+            {
+                text: "Si krahasohet rrezja e një kationi me rrezen e atomit neutral përkatës?",
+                options: ["Kationi zakonisht është më i madh", "Kationi zakonisht është më i vogël", "Janë gjithmonë të barabarta", "Rrezja e kationit është gjithmonë zero"],
+                answer: 1,
+                explanation: "Kur atomi humbet elektrone dhe formon kation, tërheqja efektive për elektronet e mbetura rritet; kationi zakonisht është më i vogël se atomi neutral."
+            },
+            {
+                text: "Cili konfigurim përfundon me 3s² dhe tregon një element të grupit IIA në periodën 3?",
+                options: ["1s² 2s² 2p⁶ 3s²", "1s² 2s² 2p⁶ 3s² 3p¹", "1s² 2s² 2p⁶ 3s¹", "1s² 2s² 2p⁶ 3s² 3p⁶"],
+                answer: 0,
+                explanation: "Konfigurimi 1s² 2s² 2p⁶ 3s² i përket magnezit (Mg). Shtresa më e jashtme ka n = 3 dhe dy elektrone valencë, prandaj është në periodën 3, grupin IIA."
+            },
+            {
+                section: "VII. Ligji i gazeve ideale",
+                text: "Gjeni trysninë e një gazi me vëllim 6 L dhe sasi 2 mol në temperaturën 20 °C. Përdorni R = 0,082 L·atm/(mol·K) dhe ligjin PV = nRT.",
+                options: ["0,13 atm", "4,0 atm", "8,0 atm", "48,1 atm"],
+                answer: 2,
+                explanation: "Kthejmë temperaturën në kelvin: T = 20 + 273 = 293 K. P = nRT/V = (2 × 0,082 × 293)/6 ≈ 8,0 atm."
+            }
+        ];
+
+        const form = document.getElementById("quiz-form");
+        const questionContainer = document.getElementById("questions");
+        const progressLabel = document.getElementById("progress-label");
+        const progressTrack = document.getElementById("progress-track");
+        const progressBar = document.getElementById("progress-bar");
+        const results = document.getElementById("results");
+        const submitButton = form.querySelector('button[type="submit"]');
+        const resetButton = form.querySelector('button[type="reset"]');
+        const submissionStatus = document.getElementById("submission-status");
+        const firstNameField = form.elements.namedItem("firstName");
+        const lastNameField = form.elements.namedItem("lastName");
+        let sendingResults = false;
+        let resultsSent = false;
+        let profileLoaded = false;
+        let candidateProfile = null;
+        const testResultsEndpoint = "/send-test-results.php";
+
+        async function loadCandidateProfile() {
+            submitButton.disabled = true;
+            const response = await fetch("/api/profile", {
+                headers: { Accept: "application/json" },
+                credentials: "same-origin"
+            });
+            const profile = await response.json();
+            if (!response.ok || typeof profile.firstName !== "string" || typeof profile.lastName !== "string") {
+                throw new Error(profile.error || "Hyr sërish në portal për të hapur testin.");
+            }
+            candidateProfile = { firstName: profile.firstName, lastName: profile.lastName };
+            firstNameField.value = candidateProfile.firstName;
+            lastNameField.value = candidateProfile.lastName;
+            profileLoaded = true;
+            submitButton.disabled = false;
+        }
+
+        loadCandidateProfile().catch(error => {
+            submissionStatus.className = "submission-status error";
+            submissionStatus.textContent = error instanceof Error ? error.message : "Të dhënat e kursantit nuk u ngarkuan.";
+        });
+
+        function shuffle(items) {
+            for (let index = items.length - 1; index > 0; index -= 1) {
+                const randomIndex = Math.floor(Math.random() * (index + 1));
+                [items[index], items[randomIndex]] = [items[randomIndex], items[index]];
+            }
+        }
+
+        function shuffleQuestionsAndOptions() {
+            const sections = [];
+            let currentSection = null;
+
+            questions.forEach(question => {
+                if (question.section) {
+                    currentSection = { title: question.section, questions: [] };
+                    sections.push(currentSection);
+                }
+                if (!currentSection) {
+                    currentSection = { title: "Pyetje të tjera", questions: [] };
+                    sections.push(currentSection);
+                }
+                currentSection.questions.push(question);
+            });
+
+            const shuffledQuestions = [];
+            sections.forEach(section => {
+                shuffle(section.questions);
+                section.questions.forEach((question, index) => {
+                    if (index === 0) {
+                        question.section = section.title;
+                    } else {
+                        delete question.section;
+                    }
+
+                    const correctOption = question.options[question.answer];
+                    shuffle(question.options);
+                    question.answer = question.options.indexOf(correctOption);
+                    shuffledQuestions.push(question);
+                });
+            });
+
+            questions.splice(0, questions.length, ...shuffledQuestions);
+        }
+
+        function renderQuestions() {
+            questions.forEach((question, index) => {
+                if (question.section) {
+                    const heading = document.createElement("h2");
+                    heading.className = "section-title";
+                    heading.textContent = question.section;
+                    questionContainer.appendChild(heading);
+                }
+
+                const fieldset = document.createElement("fieldset");
+                fieldset.className = "question";
+                fieldset.id = `question-${index}`;
+
+                const legend = document.createElement("legend");
+                legend.innerHTML = `<span class="q-number">${index + 1}.</span> ${question.text}`;
+                fieldset.appendChild(legend);
+
+                const options = document.createElement("div");
+                options.className = "options";
+
+                question.options.forEach((option, optionIndex) => {
+                    const label = document.createElement("label");
+                    label.className = "option";
+                    const input = document.createElement("input");
+                    input.type = "radio";
+                    input.name = `question-${index}`;
+                    input.value = String(optionIndex);
+                    input.addEventListener("change", updateProgress);
+                    const text = document.createElement("span");
+                    text.textContent = option;
+                    label.append(input, text);
+                    options.appendChild(label);
+                });
+
+                fieldset.appendChild(options);
+                questionContainer.appendChild(fieldset);
+            });
+        }
+
+        function updateProgress() {
+            const answered = new Set(
+                Array.from(form.querySelectorAll('input[type="radio"]:checked')).map(input => input.name)
+            ).size;
+            progressLabel.textContent = `${answered} nga ${questions.length} përgjigje`;
+            progressTrack.setAttribute("aria-valuenow", String(answered));
+            progressBar.style.width = `${(answered / questions.length) * 100}%`;
+        }
+
+        function getGrade(percentage) {
+            if (percentage >= 91) return 10;
+            if (percentage >= 81) return 9;
+            if (percentage >= 71) return 8;
+            if (percentage >= 61) return 7;
+            if (percentage >= 51) return 6;
+            if (percentage >= 41) return 5;
+            return 4;
+        }
+
+        function calculateResults() {
+            let correctCount = 0;
+
+            questions.forEach((question, index) => {
+                const selected = form.querySelector(`input[name="question-${index}"]:checked`);
+                const selectedIndex = selected ? Number(selected.value) : -1;
+                if (selectedIndex === question.answer) correctCount += 1;
+            });
+
+            const percentage = Math.round((correctCount / questions.length) * 100);
+            const grade = getGrade(percentage);
+            return { correctCount, percentage, grade };
+        }
+
+        function showResults(outcome) {
+            const firstName = form.elements.namedItem("firstName").value.trim();
+            const lastName = form.elements.namedItem("lastName").value.trim();
+            const review = document.getElementById("review-list");
+            review.replaceChildren();
+
+            questions.forEach((question, index) => {
+                const selected = form.querySelector(`input[name="question-${index}"]:checked`);
+                const selectedIndex = selected ? Number(selected.value) : -1;
+                const isCorrect = selectedIndex === question.answer;
+
+                const item = document.createElement("article");
+                item.className = `review-item ${isCorrect ? "correct" : "incorrect"}`;
+                const title = document.createElement("strong");
+                title.textContent = `${index + 1}. ${isCorrect ? "Saktë" : "Përgjigje jo e saktë"}`;
+                const yourAnswer = document.createElement("p");
+                yourAnswer.textContent = `Përgjigjja jote: ${selectedIndex < 0 ? "Pa përgjigje" : question.options[selectedIndex]}`;
+                const correctAnswer = document.createElement("p");
+                correctAnswer.textContent = `Përgjigjja e saktë: ${question.options[question.answer]}`;
+                const explanation = document.createElement("p");
+                explanation.className = "explanation";
+                explanation.textContent = question.explanation;
+                item.append(title, yourAnswer, correctAnswer, explanation);
+                review.appendChild(item);
+            });
+
+            document.getElementById("candidate-result").textContent = `Kandidati: ${firstName} ${lastName}`;
+            document.getElementById("score").textContent = `${outcome.correctCount} / ${questions.length} pikë · ${outcome.percentage}%`;
+            let feedback = "Rishiko shpjegimet dhe përgatitu sërish.";
+            if (outcome.percentage >= 95) feedback = "Shkëlqyeshëm! Ke përvetësuar shumë mirë temat.";
+            else if (outcome.grade === 10) feedback = "Rezultat shumë i mirë! Rishiko temat ku gabove.";
+            else if (outcome.grade >= 8) feedback = "Punë e mirë! Rishiko temat ku gabove.";
+            else if (outcome.grade >= 6) feedback = "Vazhdo me përsëritjen e temave kryesore.";
+            const unanswered = questions.length - form.querySelectorAll('input[type="radio"]:checked').length;
+            document.getElementById("result-summary").textContent = `Nota: ${outcome.grade}. ${feedback} Pyetje pa përgjigje: ${unanswered}.`;
+            document.getElementById("award").hidden = outcome.percentage < 95;
+        }
+
+        async function sendResults(outcome) {
+            const firstName = form.elements.namedItem("firstName").value.trim();
+            const lastName = form.elements.namedItem("lastName").value.trim();
+            const answerDetails = questions.map((question, index) => {
+                const selected = form.querySelector(`input[name="question-${index}"]:checked`);
+                const selectedIndex = selected ? Number(selected.value) : -1;
+                const chosenAnswer = selectedIndex < 0 ? "Pa përgjigje" : question.options[selectedIndex];
+                return `${index + 1}. ${question.text}\nPërgjigjja e kandidatit: ${chosenAnswer}\nPërgjigjja e saktë: ${question.options[question.answer]}`;
+            }).join("\n\n");
+            const response = await fetch(testResultsEndpoint, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                credentials: "same-origin",
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    emailConsent: form.elements.namedItem("emailConsent").checked,
+                    correctCount: outcome.correctCount,
+                    total: questions.length,
+                    percentage: outcome.percentage,
+                    grade: outcome.grade,
+                    answerDetails,
+                    honeypot: form.elements.namedItem("_honey").value
+                })
+            });
+            const responseData = await response.json().catch(() => ({}));
+            if (!response.ok || responseData.success !== true || responseData.teacherNotified !== true) {
+                throw new Error(responseData.error || `Dërgimi i emailit dështoi me statusin ${response.status}.`);
+            }
+        }
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            if (sendingResults || resultsSent) return;
+
+            sendingResults = true;
+            submitButton.disabled = true;
+            resetButton.disabled = true;
+            submissionStatus.className = "submission-status";
+            submissionStatus.textContent = "Rezultati po dërgohet me email...";
+            results.classList.add("visible");
+            results.scrollIntoView({ behavior: "smooth", block: "start" });
+            const outcome = calculateResults();
+            showResults(outcome);
+
+            try {
+                await sendResults(outcome);
+                resultsSent = true;
+                submissionStatus.classList.add("success");
+                submissionStatus.textContent = "Testi u dorëzua me sukses. Rezultati i plotë do t’i dërgohet mësuesit.";
+            } catch (error) {
+                console.error("Dërgimi i emailit dështoi.", error);
+                submissionStatus.classList.add("error");
+                submissionStatus.textContent = error instanceof TypeError
+                    ? "Dërgimi dështoi. Kontrollo lidhjen me internetin dhe provo përsëri."
+                    : (error instanceof Error ? error.message : "Dërgimi dështoi. Provo përsëri.");
+            } finally {
+                sendingResults = false;
+                resetButton.disabled = false;
+                submitButton.disabled = resultsSent;
+            }
+        });
+
+        form.addEventListener("reset", event => {
+            if (sendingResults) {
+                event.preventDefault();
+                return;
+            }
+            resultsSent = false;
+            submitButton.disabled = !profileLoaded;
+            resetButton.disabled = false;
+            window.setTimeout(() => {
+                if (candidateProfile) {
+                    firstNameField.value = candidateProfile.firstName;
+                    lastNameField.value = candidateProfile.lastName;
+                }
+                updateProgress();
+                results.classList.remove("visible");
+                document.getElementById("candidate-result").textContent = "";
+                document.getElementById("score").textContent = "";
+                document.getElementById("result-summary").textContent = "";
+                document.getElementById("award").hidden = true;
+                submissionStatus.className = "submission-status";
+                submissionStatus.textContent = "";
+                document.getElementById("review-list").replaceChildren();
+            }, 0);
+        });
+
+        shuffleQuestionsAndOptions();
+        renderQuestions();
+        updateProgress();
+    </script>
+</body>
+</html>
