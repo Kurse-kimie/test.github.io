@@ -250,7 +250,7 @@
     <main>
         <section class="intro" aria-labelledby="test-info">
             <h2 id="test-info">Udhëzime</h2>
-            <p>Testi ka 33 pyetje me alternativa. Zgjidh një përgjigje për çdo pyetje dhe në fund shtyp <strong>Përfundo dhe dërgo testin</strong>. Pas shënimit të pëlqimit, rezultati shfaqet edhe për ty dhe i dërgohet mësuesit.</p>
+            <p>Testi ka 33 pyetje me alternativa. Zgjidh një përgjigje për çdo pyetje dhe në fund shtyp <strong>Përfundo dhe dërgo testin</strong>. Pas shënimit të pëlqimit, rezultati llogaritet dhe shfaqet këtu; dërgimi me email bëhet veçmas.</p>
             <p class="note">Pyetjet përfshijnë gjendjet e lëndës, ndarjen e substancave, atomin dhe konfigurimin elektronik, sistemin periodik, katër numrat kuantikë dhe vetitë periodike.</p>
             <p class="note">Pyetjet dhe alternativat radhiten ndryshe sa herë hapet testi.</p>
             <p class="note">Grupet shënohen me emërtimin klasik A/B: grupet kryesore IA–VIIIA dhe grupet kalimtare IIIB–VIIIB, IB dhe IIB.</p>
@@ -764,9 +764,10 @@
             } catch (error) {
                 console.error("Dërgimi i emailit dështoi.", error);
                 submissionStatus.classList.add("error");
-                submissionStatus.textContent = error instanceof TypeError
-                    ? "Dërgimi dështoi. Kontrollo lidhjen me internetin dhe provo përsëri."
-                    : (error instanceof Error ? error.message : "Dërgimi dështoi. Provo përsëri.");
+                const emailError = error instanceof TypeError
+                    ? "Kontrollo lidhjen me internetin dhe provo përsëri."
+                    : (error instanceof Error ? error.message : "Provo përsëri.");
+                submissionStatus.textContent = `Rezultati u llogarit dhe shfaqet më sipër, por emaili nuk u konfirmua: ${emailError}`;
             } finally {
                 sendingResults = false;
                 resetButton.disabled = false;
